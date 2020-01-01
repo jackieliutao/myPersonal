@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongpo.mapper.StudyMapper" >
+  <resultMap id="BaseResultMap" type="com.dongpo.domain.Study" >
+    <id column="s_id" property="sId" jdbcType="INTEGER" />
+    <result column="s_content" property="sContent" jdbcType="VARCHAR" />
+    <result column="s_address" property="sAddress" jdbcType="VARCHAR" />
+    <association property="employee" column="employee" javaType="Employee">
+      <id column="emp_id" property="empId" jdbcType="INTEGER" />
+      <result column="emp_name" property="empName" jdbcType="VARCHAR" />
+    </association>
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from study
+    where s_id = #{sId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.dongpo.domain.Study" >
+    insert into study ( s_content, s_address,
+      employee)
+    values ( #{sContent,jdbcType=VARCHAR}, #{sAddress,jdbcType=VARCHAR},
+      #{employee.empId})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.dongpo.domain.Study" >
+    update study
+    set s_content = #{sContent,jdbcType=VARCHAR},
+      s_address = #{sAddress,jdbcType=VARCHAR},
+      employee = #{employee.empId}
+    where s_id = #{sId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select s_id, s_content, s_address, employee
+    from study
+    where s_id = #{sId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select * from study as s
+    left join employee as e on s.employee = e.emp_id
+    where 1 = 1
+    <if test="key != null and key != ''">
+      and e.emp_name like concat('%',#{key},'%')
+      or s.s_content like concat('%',#{key},'%')
+    </if>
+  </select>
+</mapper>

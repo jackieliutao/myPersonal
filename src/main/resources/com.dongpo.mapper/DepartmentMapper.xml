@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongpo.mapper.DepartmentMapper" >
+  <resultMap id="BaseResultMap" type="com.dongpo.domain.Department" >
+    <id column="dep_id" property="depId" jdbcType="INTEGER" />
+    <result column="dep_name" property="depName" jdbcType="VARCHAR" />
+    <result property="count" column="count"/>
+  </resultMap>
+
+    <insert id="add" parameterType="Department">
+      insert into department(dep_name) values(#{depName})
+    </insert>
+
+  <update id="updateByPrimaryKey">
+    update department set dep_name = #{depName} where dep_id=#{depId}
+  </update>
+
+  <delete id="deleteByPrimaryKey">
+    delete from department where dep_id=#{depId}
+  </delete>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select dep_id, dep_name,count
+    from department
+    where dep_id = #{depId,jdbcType=INTEGER}
+  </select>
+
+  <sql id="search-dep">
+    <where>
+      <if test="key != '' and key !=null">
+        and dep_name like concat('%',#{key},'%')
+      </if>
+    </where>
+  </sql>
+
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="string">
+    select * from department
+      <if test="key != '' and key !=null">
+      where dep_name like concat('%',#{key},'%')
+      </if>
+  </select>
+
+    <select id="getAll" resultMap="BaseResultMap">
+      select * from department
+    </select>
+
+
+</mapper>

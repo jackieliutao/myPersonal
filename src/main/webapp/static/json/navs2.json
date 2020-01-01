@@ -1,0 +1,128 @@
+[
+	{
+		"title": "部门管理",
+		"icon": "&#xe653",
+		"spread": false,
+		"children": [
+			{
+				"title": "部门列表",
+				"icon": "&#xe653",
+				"href": "/department/departmentMenu",
+				"spread": false
+			}
+		]
+	},
+	{
+		"title": "职位管理",
+		"icon": "&#xe663;",
+		"spread": false,
+		"children": [
+			{
+				"title": "职位列表",
+				"icon": "&#xe61c;",
+				"href": "/position/positionMenu",
+				"spread": false
+			},
+			{
+				"title": "职称列表",
+				"icon": "&#xe61c;",
+				"href": "/professional/professionalMenu",
+				"spread": false
+			}
+		]
+	},
+	{
+		"title": "员工管理",
+		"icon": "&#xe770;",
+		"spread": false,
+		"children": [
+			{
+				"title": "员工列表",
+				"icon": "&#xe613;",
+				"href": "/employee/employeeMenu",
+				"spread": false
+			},
+			{
+				"title": "工作经历",
+				"icon": "&#xe61c;",
+				"href": "/workExperience/workExperienceMenu",
+				"spread": false
+			},
+			{
+				"title": "奖惩详情",
+				"icon": "&#xe61c;",
+				"href": "/reward/rewardMenu",
+				"spread": false
+			},
+			{
+				"title": "学习记录",
+				"icon": "&#xe61c;",
+				"href": "/study/studyMenu",
+				"spread": false
+			}
+		]
+	},
+	{
+		"title": "管理员",
+		"icon": "icon-text",
+		"spread": false,
+		"children": [
+			{
+				"title": "管理员列表",
+				"icon": "&#xe61c;",
+				"href": "/manage/manageMenu",
+				"spread": false
+			},
+			{
+				"title": "请假审批",
+				"icon": "&#xe609;",
+				"href": "page/login/login.html",
+				"spread": false,
+				"target": "_blank"
+			}
+		]
+	},
+	{
+		"title": "角色/权限",
+		"icon": "icon-text",
+		"spread": false,
+		"children": [
+			{
+				"title": "404页面",
+				"icon": "&#xe61c;",
+				"href": "page/news/newsList.html",
+				"spread": false
+			},
+			{
+				"title": "登录",
+				"icon": "&#xe609;",
+				"href": "page/login/login.html",
+				"spread": false,
+				"target": "_blank"
+			}
+		]
+	},
+	{
+		"title": "公告管理",
+		"icon": "icon-text",
+		"spread": false,
+		"children": [
+			{
+				"title": "发布公告",
+				"icon": "&#xe61c;",
+				"href": "page/news/newsList.html",
+				"spread": false
+			},
+			{
+				"title": "所有公告",
+				"icon": "&#xe609;",
+				"href": "page/login/login.html",
+				"spread": false,
+				"target": "_blank"
+			}
+		]
+	}
+]
+
+
+

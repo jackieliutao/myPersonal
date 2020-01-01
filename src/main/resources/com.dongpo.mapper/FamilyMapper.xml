@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongpo.mapper.FamilyMapper" >
+  <resultMap id="BaseResultMap" type="com.dongpo.domain.Family" >
+    <id column="fa_id" property="faId" jdbcType="INTEGER" />
+    <result column="fa_name" property="faName" jdbcType="VARCHAR" />
+    <result column="fa_rel" property="faRel" jdbcType="VARCHAR" />
+    <result column="fa_address" property="faAddress" jdbcType="VARCHAR" />
+    <result column="fa_phone" property="faPhone" jdbcType="VARCHAR" />
+    <result column="fa_group" property="faGroup" jdbcType="VARCHAR" />
+    <result column="fa_position" property="faPosition" jdbcType="VARCHAR" />
+    <result column="emp_id" property="empId" jdbcType="INTEGER" />
+  </resultMap>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from family
+    where fa_id = #{faId,jdbcType=INTEGER}
+  </delete>
+
+  <delete id="deleteByEmpId">
+    delete from family
+    where emp_id = #{empId}
+  </delete>
+
+  <insert id="insert" parameterType="com.dongpo.domain.Family" >
+    insert into family ( fa_name, fa_rel,
+      fa_address, fa_phone, fa_group, 
+      fa_position, emp_id)
+    values ( #{faName,jdbcType=VARCHAR}, #{faRel,jdbcType=VARCHAR},
+      #{faAddress,jdbcType=VARCHAR}, #{faPhone,jdbcType=VARCHAR}, #{faGroup,jdbcType=VARCHAR}, 
+      #{faPosition,jdbcType=VARCHAR}, #{empId,jdbcType=INTEGER})
+  </insert>
+
+  <update id="updateByPrimaryKey" parameterType="com.dongpo.domain.Family" >
+    update family
+    set fa_name = #{faName,jdbcType=VARCHAR},
+      fa_rel = #{faRel,jdbcType=VARCHAR},
+      fa_address = #{faAddress,jdbcType=VARCHAR},
+      fa_phone = #{faPhone,jdbcType=VARCHAR},
+      fa_group = #{faGroup,jdbcType=VARCHAR},
+      fa_position = #{faPosition,jdbcType=VARCHAR},
+      emp_id = #{empId,jdbcType=INTEGER}
+    where fa_id = #{faId,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select fa_id, fa_name, fa_rel, fa_address, fa_phone, fa_group, fa_position, emp_id
+    from family
+    where fa_id = #{faId,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select fa_id, fa_name, fa_rel, fa_address, fa_phone, fa_group, fa_position, emp_id
+    from family
+  </select>
+  <select id="getFamilyByEmpId" resultMap="BaseResultMap">
+    select fa_id, fa_name, fa_rel, fa_address, fa_phone, fa_group, fa_position, emp_id
+    from family
+    where emp_id = #{empId}
+  </select>
+</mapper>

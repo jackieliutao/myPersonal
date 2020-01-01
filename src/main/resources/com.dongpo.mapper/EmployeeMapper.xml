@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongpo.mapper.EmployeeMapper" >
+  <resultMap id="BaseResultMap" type="com.dongpo.domain.Employee" >
+    <id column="emp_id" property="empId" jdbcType="INTEGER" />
+    <result column="emp_name" property="empName" jdbcType="VARCHAR" />
+    <result column="emp_sex" property="empSex" jdbcType="VARCHAR" />
+    <result column="emp_age" property="empAge" jdbcType="INTEGER" />
+    <result column="emp_birthday" property="empBirthday" jdbcType="VARCHAR" />
+    <result column="emp_isBlack" property="empIsblack" jdbcType="BIT" />
+    <result column="emp_img" property="empImg" jdbcType="VARCHAR" />
+    <result column="emp_phone" property="empPhone" jdbcType="VARCHAR" />
+    <result column="emp_qq" property="empQq" jdbcType="VARCHAR" />
+    <result column="emp_email" property="empEmail" jdbcType="VARCHAR" />
+    <association property="position" column="po_id" javaType="Position">
+      <id column="po_id" property="poId" jdbcType="INTEGER" />
+      <result property="poNum" column="po_num"/>
+      <result column="po_name" property="poName" jdbcType="VARCHAR" />
+    </association>
+    <association property="department" column="department" javaType="Department">
+      <id column="dep_id" property="depId" jdbcType="INTEGER" />
+      <result column="dep_name" property="depName" jdbcType="VARCHAR" />
+      <result property="count" column="count"/>
+    </association>
+    <association property="professional" column="professional" javaType="Professional">
+      <id property="proId" column="pro_id"/>
+      <result property="proName" column="pro_name"/>
+    </association>
+  </resultMap>
+
+  <update id="updateRelation">
+     update employee set po_id = null where po_id=#{pid}
+  </update>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from employee
+    where emp_id = #{empId,jdbcType=INTEGER}
+  </delete>
+
+  <update id="updateByPrimaryKey" parameterType="com.dongpo.domain.Employee" >
+    update employee
+    set emp_name = #{empName,jdbcType=VARCHAR},
+      emp_sex = #{empSex,jdbcType=VARCHAR},
+      emp_age = #{empAge,jdbcType=INTEGER},
+      emp_birthday = #{empBirthday,jdbcType=VARCHAR},
+      emp_isBlack = #{empIsblack,jdbcType=BIT},
+      emp_img = #{empImg,jdbcType=VARCHAR},
+      po_id = #{position.poId},
+      emp_phone = #{empPhone,jdbcType=VARCHAR},
+      emp_qq = #{empQq,jdbcType=VARCHAR},
+      emp_email = #{empEmail,jdbcType=VARCHAR},
+      professional = #{professional.proId},
+      department = #{department.depId}
+    where emp_id = #{empId,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select e.*,p.po_name,p.po_num,pr.pro_id,pr.pro_name,d.dep_id,d.dep_name,d.count
+    from employee as e
+    left join department as d
+    on e.department = d.dep_id
+    left join professional as pr
+    on e.professional = pr.pro_id
+    left join position as p
+    on e.po_id = p.po_id
+    where e.emp_id = #{empId,jdbcType=INTEGER}
+  </select>
+
+  <insert id="insert" parameterType="com.dongpo.domain.Employee" useGeneratedKeys="true" keyProperty="empId" keyColumn="emp_id">
+    insert into employee ( emp_name, emp_sex,
+      emp_age, emp_birthday, emp_isBlack,
+      emp_img, po_id, emp_phone,
+      emp_qq, emp_email,professional,department
+      )
+    values ( #{empName,jdbcType=VARCHAR}, #{empSex,jdbcType=VARCHAR},
+      #{empAge,jdbcType=INTEGER}, #{empBirthday,jdbcType=VARCHAR}, #{empIsblack,jdbcType=BIT},
+      #{empImg,jdbcType=VARCHAR}, #{position.poId}, #{empPhone,jdbcType=VARCHAR},
+      #{empQq,jdbcType=VARCHAR}, #{empEmail,jdbcType=VARCHAR},
+      #{professional.proId},
+      #{department.depId}
+      )
+  </insert>
+
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select e.*,p.po_name,p.po_num,pr.pro_id,pr.pro_name,d.dep_id,d.dep_name,d.count
+    from employee as e
+    left join department as d
+    on e.department = d.dep_id
+    left join professional as pr
+    on e.professional = pr.pro_id
+    left join position as p
+    on e.po_id = p.po_id
+    where 1=1
+    <if test="depId != null and depId != ''">
+      and d.dep_id = #{depId}
+    </if>
+    <if test="poId != null and poId != ''">
+      and e.po_id = #{poId}
+    </if>
+    <if test="key != null and key != ''">
+      and e.emp_name like concat('%',#{key},'%')
+      or e.emp_phone like concat('%',#{key},'%')
+    </if>
+  </select>
+
+  <select id="getAll" resultMap="BaseResultMap">
+    select e.*,p.po_name,p.po_num,pr.pro_id,pr.pro_name,d.dep_id,d.dep_name,d.count
+    from employee as e
+    left join department as d
+    on e.department = d.dep_id
+    left join professional as pr
+    on e.professional = pr.pro_id
+    left join position as p
+    on e.po_id = p.po_id
+  </select>
+</mapper>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongpo.mapper.ProfessionalMapper" >
+  <resultMap id="BaseResultMap" type="com.dongpo.domain.Professional" >
+    <id column="pro_id" property="proId" jdbcType="INTEGER" />
+    <result column="pro_name" property="proName" jdbcType="VARCHAR" />
+    <association property="department" column="department" javaType="Department">
+      <id property="depId" column="dep_id"/>
+      <result column="dep_name" property="depName" jdbcType="VARCHAR" />
+    </association>
+
+  </resultMap>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from professional
+    where pro_id = #{proId,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.dongpo.domain.Professional" >
+    insert into professional (pro_id, pro_name, department
+      )
+    values (#{proId,jdbcType=INTEGER}, #{proName,jdbcType=VARCHAR},
+    #{department.depId}
+      )
+  </insert>
+
+  <update id="updateByPrimaryKey" parameterType="com.dongpo.domain.Professional" >
+    update professional
+    set pro_name = #{proName,jdbcType=VARCHAR},
+      department = #{department.depId}
+    where pro_id = #{proId,jdbcType=INTEGER}
+  </update>
+
+<!--  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >-->
+<!--    select pro_id, pro_name, department-->
+<!--    from professional-->
+<!--    where pro_id = #{proId,jdbcType=INTEGER}-->
+<!--  </select>-->
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select * from professional as p LEFT JOIN department as d
+    on p.department= d.dep_id
+    where 1 = 1
+    <if test="key != null and key !=''">
+        and p.pro_name like concat('%',#{key},'%')
+        or d.dep_name like concat('%',#{key},'%')
+    </if>
+    order by d.dep_id desc
+  </select>
+  <select id="getProfessionalByDepId" resultMap="BaseResultMap">
+    select * from professional as p LEFT JOIN department as d
+    on p.department= d.dep_id
+    where d.dep_id=#{depId}
+  </select>
+</mapper>

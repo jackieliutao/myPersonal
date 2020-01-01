@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongpo.mapper.RewardMapper" >
+  <resultMap id="BaseResultMap" type="com.dongpo.domain.Reward" >
+    <id column="re_id" property="reId" jdbcType="INTEGER" />
+    <result column="re_desc" property="reDesc" jdbcType="VARCHAR" />
+    <result column="re_money" property="reMoney" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="BIT" />
+    <result column="re_date" property="reDate"/>
+    <association property="employee" column="employee" javaType="Employee">
+      <id property="empId" column="emp_id"/>
+      <result property="empName" column="emp_name"/>
+    </association>
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from reward
+    where re_id = #{reId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.dongpo.domain.Reward" >
+    insert into reward ( re_desc, re_money,
+      employee, status,re_date)
+    values ( #{reDesc,jdbcType=VARCHAR}, #{reMoney,jdbcType=VARCHAR},
+      #{employee.empId}, #{status,jdbcType=BIT},#{reDate})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.dongpo.domain.Reward" >
+    update reward
+    set re_desc = #{reDesc,jdbcType=VARCHAR},
+      re_money = #{reMoney,jdbcType=VARCHAR},
+      employee = #{employee.empId},
+      status = #{status,jdbcType=BIT},
+      re_date = #{reDate}
+    where re_id = #{reId,jdbcType=INTEGER}
+  </update>
+<!--  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >-->
+<!--    select re_id, re_desc, re_money, employee, status-->
+<!--    from reward-->
+<!--    where re_id = #{reId,jdbcType=INTEGER}-->
+<!--  </select>-->
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select * from reward as r
+    left join employee as e on r.employee=e.emp_id
+    where 1 = 1
+    <if test="key != null and key != ''">
+      and e.emp_name like concat('%',#{key},'%')
+    </if>
+  </select>
+</mapper>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongpo.mapper.PositionMapper" >
+  <resultMap id="BaseResultMap" type="com.dongpo.domain.Position" >
+    <id column="po_id" property="poId" jdbcType="INTEGER" />
+    <result property="poNum" column="po_num"/>
+    <result column="po_name" property="poName" jdbcType="VARCHAR" />
+    <!--<association property="department" column="dep_id" javaType="Department" select="com.dongpo.mapper.DepartmentMapper.selectByPrimaryKey">-->
+    <!--</association>-->
+    <result property="department.depId" column="dep_id"/>
+    <result property="department.depName" column="dep_name"/>
+  </resultMap>
+
+    <insert id="add" parameterType="Position">
+      insert into position (po_num, po_name, dep_id)
+      values (#{poNum}, #{poName}, #{department.depId})
+    </insert>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from position
+    where po_id = #{poId,jdbcType=INTEGER}
+  </delete>
+  <!--<insert id="insert" parameterType="com.dongpo.domain.Position" >-->
+    <!--insert into position (po_id, po_name, dep_id-->
+      <!--)-->
+    <!--values (#{poId,jdbcType=INTEGER}, #{poName,jdbcType=VARCHAR}, #{depId,jdbcType=INTEGER}-->
+      <!--)-->
+  <!--</insert>-->
+  <update id="updateByPrimaryKey" parameterType="com.dongpo.domain.Position" >
+    update position
+    set po_name = #{poName},
+      dep_id = #{department.depId},
+      po_num = #{poNum}
+    where po_id = #{poId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select po_id,po_num, po_name, dep_id
+    from position
+    where po_id = #{poId,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select p.po_id,p.po_name,p.po_num,d.* from position as p
+    LEFT JOIN department as d on p.dep_id=d.dep_id
+    <if test="key != null and key!=''">
+      where po_name like concat('%',#{key},'%')
+      or po_num like concat('%',#{key},'%')
+      or dep_name like concat('%',#{key},'%')
+    </if>
+  </select>
+
+    <select id="getAll" resultMap="BaseResultMap">
+      select p.po_id,p.po_name,p.po_num,d.* from position as p
+      LEFT JOIN department as d on p.dep_id=d.dep_id
+    </select>
+
+  <select id="getPositionByDepId" resultMap="BaseResultMap">
+      select p.po_id,p.po_name,p.po_num,d.* from position as p
+      LEFT JOIN department as d on p.dep_id=d.dep_id
+      where d.dep_id=#{depId}
+  </select>
+
+</mapper>

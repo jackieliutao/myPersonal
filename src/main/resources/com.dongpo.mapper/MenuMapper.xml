@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongpo.mapper.MenuMapper" >
+  <resultMap id="BaseResultMap" type="com.dongpo.domain.Menu" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="icon" property="icon" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="spread" property="spread" jdbcType="BIT" />
+    <result column="href" property="href" jdbcType="VARCHAR" />
+    <result column="parentid" property="parentid"/>
+    <collection property="children" column="id" select="selectByParentId" ofType="Menu">
+
+    </collection>
+  </resultMap>
+  <select id="selectByParentId" resultMap="BaseResultMap">
+    select * from menu where parentid=#{id}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from menu
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.dongpo.domain.Menu" >
+    insert into menu (id, icons, parentid, 
+      title, spread, href)
+    values (#{id,jdbcType=INTEGER}, #{icons,jdbcType=VARCHAR}, #{parentid,jdbcType=INTEGER}, 
+      #{title,jdbcType=VARCHAR}, #{spread,jdbcType=BIT}, #{href,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.dongpo.domain.Menu" >
+    update menu
+    set icons = #{icons,jdbcType=VARCHAR},
+      parentid = #{parentid,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
+      spread = #{spread,jdbcType=BIT},
+      href = #{href,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, icons, parentid, title, spread, href
+    from menu
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select * from menu where parentid=0
+  </select>
+</mapper>

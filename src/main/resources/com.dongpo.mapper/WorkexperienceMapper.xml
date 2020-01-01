@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongpo.mapper.WorkexperienceMapper" >
+  <resultMap id="BaseResultMap" type="com.dongpo.domain.Workexperience" >
+    <id column="wb_id" property="wbId" jdbcType="INTEGER" />
+    <result column="wb_company" property="wbCompany" jdbcType="VARCHAR" />
+    <result column="wb_position" property="wbPosition" jdbcType="VARCHAR" />
+    <result column="wb_start" property="wbStart" jdbcType="DATE" />
+    <result column="wb_end" property="wbEnd" jdbcType="DATE" />
+    <association property="employee" column="employee" javaType="Employee">
+      <id column="emp_id" property="empId" jdbcType="INTEGER" />
+      <result column="emp_name" property="empName" jdbcType="VARCHAR" />
+    </association>
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from workexperience
+    where wb_id = #{wbId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.dongpo.domain.Workexperience" >
+    insert into workexperience ( wb_company, wb_position,
+      wb_start, wb_end, employee)
+    values ( #{wbCompany,jdbcType=VARCHAR}, #{wbPosition,jdbcType=VARCHAR},
+      #{wbStart,jdbcType=DATE}, #{wbEnd,jdbcType=DATE}, #{employee.empId})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.dongpo.domain.Workexperience" >
+    update workexperience
+    set wb_company = #{wbCompany,jdbcType=VARCHAR},
+      wb_position = #{wbPosition,jdbcType=VARCHAR},
+      wb_start = #{wbStart,jdbcType=DATE},
+      wb_end = #{wbEnd,jdbcType=DATE},
+      employee = #{employee.empId}
+    where wb_id = #{wbId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select wb_id, wb_company, wb_position, wb_start, wb_end, emp_id
+    from workexperience
+    where wb_id = #{wbId,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select * from workexperience as w
+    left join employee as e on w.employee=e.emp_id
+    where 1=1
+    <if test="key != null and key !=''">
+      and w.wb_company like concat('%',#{key},'%')
+      or e.emp_name like concat('%',#{key},'%')
+    </if>
+  </select>
+</mapper>

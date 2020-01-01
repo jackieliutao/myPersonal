@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongpo.mapper.RoleMapper" >
+  <resultMap id="BaseResultMap" type="com.dongpo.domain.Role" >
+    <id column="ro_id" property="roId" jdbcType="INTEGER" />
+    <result column="ro_name" property="roName" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from role
+    where ro_id = #{roId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.dongpo.domain.Role" >
+    insert into role (ro_id, ro_name)
+    values (#{roId,jdbcType=INTEGER}, #{roName,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.dongpo.domain.Role" >
+    update role
+    set ro_name = #{roName,jdbcType=VARCHAR}
+    where ro_id = #{roId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select ro_id, ro_name
+    from role
+    where ro_id = #{roId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select ro_id, ro_name
+    from role
+  </select>
+</mapper>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongpo.mapper.AuthorityMapper" >
+  <resultMap id="BaseResultMap" type="com.dongpo.domain.Authority" >
+    <id column="au_id" property="auId" jdbcType="INTEGER" />
+    <result column="au_name" property="auName" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from authority
+    where au_id = #{auId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.dongpo.domain.Authority" >
+    insert into authority (au_id, au_name)
+    values (#{auId,jdbcType=INTEGER}, #{auName,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.dongpo.domain.Authority" >
+    update authority
+    set au_name = #{auName,jdbcType=VARCHAR}
+    where au_id = #{auId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select au_id, au_name
+    from authority
+    where au_id = #{auId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select au_id, au_name
+    from authority
+  </select>
+</mapper>
